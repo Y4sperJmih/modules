@@ -48,7 +48,7 @@ class AutomaticReactionMod(loader.Module):
 		if emoji not in emojis:
 			return await message.edit("<b>Такой реакции нет.</b>")
 		user_id = (await message.get_reply_message()).from_id
-		chat_id = message.chat if message.chat is None else message.chat.id
+		chat_id = message.peer_id.user_id if message.chat is None else message.chat.id
 		reaction = {"emoji": emoji, "user_id": user_id, "chat_id": chat_id}
 
 		reactions = self.db.get("reaction", "reactions")
@@ -97,7 +97,7 @@ class AutomaticReactionMod(loader.Module):
 			try:
 				for r in reactions:
 					if m.chat is None:
-						if m.from_id == r["user_id"]:
+						if m.from_id == r["user_id"] and m.peer_id.user_id == r["chat_id"]:
 							await self.client.send_reaction(message=m.id, reaction=(r["emoji"]).encode("utf-8"), entity=m.from_id)
 					else:
 						if m.from_id == r["user_id"] and m.chat.id == r["chat_id"]:
