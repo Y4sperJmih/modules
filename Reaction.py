@@ -97,17 +97,16 @@ class AutomaticReactionMod(loader.Module):
 	async def watcher(self, m: types.Message):
 		if self.db.get("reaction", "status"):
 			reactions = self.db.get("reaction", "reactions")
-			try:
-				for r in reactions:
-					if m.chat is None:
-						try:
-							if m.from_id == r["user_id"] and m.peer_id.user_id == r["chat_id"]:
-								await self.client.send_reaction(message=m.id, reaction=(r["emoji"]).encode("utf-8"), entity=m.from_id)
-						except:
-							if m.from_id == r["user_id"] and m.peer_id.chat_id == r["chat_id"]:
-								await self.client.send_reaction(message=m.id, reaction=(r["emoji"]).encode("utf-8"), entity=m.from_id)
-					else:
-						if m.from_id == r["user_id"] and m.chat.id == r["chat_id"]:
+			for r in reactions:
+				if m.chat is None:
+					try:
+						if m.from_id == r["user_id"] and m.peer_id.user_id == r["chat_id"]:
+							await self.client.send_reaction(message=m.id, reaction=(r["emoji"]).encode("utf-8"), entity=m.from_id)
+					except:
+						if m.from_id == r["user_id"] and m.peer_id.chat_id == r["chat_id"]:
 							await self.client.send_reaction(message=m.id, reaction=(r["emoji"]).encode("utf-8"), entity=m.peer_id)
-			except: return
+				else:
+					if m.from_id == r["user_id"] and m.chat.id == r["chat_id"]:
+						await self.client.send_reaction(message=m.id, reaction=(r["emoji"]).encode("utf-8"), entity=m.peer_id)
+			
 			
