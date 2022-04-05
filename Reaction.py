@@ -96,7 +96,8 @@ class AutomaticReactionMod(loader.Module):
 
 	async def watcher(self, m: types.Message):
 		if self.db.get("reaction", "status"):
-			reactions = self.db.get("reaction", "reactions");if reactions is None:return
+			reactions = self.db.get("reaction", "reactions")
+			if reactions is None:return
 			for r in reactions:
 				if m.chat is None:
 					try:
