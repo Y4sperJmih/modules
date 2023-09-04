@@ -106,8 +106,6 @@ class AutomaticReactionMod(loader.Module):
 					except:
 						if m.from_id == r["user_id"] and m.peer_id.chat_id == r["chat_id"]:
 							await self.client.send_reaction(message=m.id, reaction=(r["emoji"]).encode("utf-8"), entity=m.peer_id)
-				else:
-					if m.from_id == r["user_id"] and m.chat.id == r["chat_id"]:
-						await self.client.send_reaction(message=m.id, reaction=(r["emoji"]).encode("utf-8"), entity=m.peer_id)
+				
 			
 			
